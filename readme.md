@@ -54,8 +54,8 @@ require 'vendor/autoload.php';
 
 use JYmusic\Assets\Minify;
 
-Minify::serve("Files","//js/test.js");
+Minify::serve("Files",["//js/test.js"]);
 
-Minify::serve("Files", "//css/test.css");
+Minify::serve("Files", ["//css/test.css"]);
 ```
 
