@@ -1,0 +1,34 @@
+{
+  "name": "jymusic/assets",
+  "type": "library",
+  "description": "一个php静态资源管理工具.",
+  "keywords": [
+    "jymusic",
+    "assets",
+    "minify",
+    "js",
+    "css"
+  ],
+  "homepage": "https://github.com/jymusic/assets",
+  "support": {
+    "issues": "https://github.com/jymusic/assets/issues",
+    "source": "https://github.com/jymusic/assets"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "JYmusic",
+      "email": "jyuucn@163.com",
+      "homepage": "http://jyuu.cn"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "JYmusic\\Assets\\": "src/"
+    }
+  }
+}
