@@ -10,7 +10,6 @@
 use JYmusic\Assets\Minify;
 
 //合并压缩js
-
 $js = [
    '//js/test.js',
    '//js/test2.js',

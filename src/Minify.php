@@ -57,28 +57,28 @@ class Minify {
     public static $importWarning = "/* See http://code.google.com/p/minify/wiki/CommonProblems#@imports_can_appear_in_invalid_locations_in_combined_CSS_files */\n";
 
     /**
-     * Has the DOCUMENT_ROOT been set in user code?
+     * DOCUMENT_ROOT 是否被设置
      * 
      * @var bool
      */
     public static $isDocRootSet = false;
     
     /**
-     * Any Minify_Cache_* object or null (i.e. no server cache is used)
+     * 所有 Minify\Cache\* 对象 or null (i.e. 不使用服务器缓存)
      *
-     * @var Minify_Cache_File
+     * @var Minify\Cache\File
      */
     private static $_cache = null;
     
     /**
-     * Active controller for current request
+     * 初始化控制器
      *
-     * @var Minify_Controller_Base
+     * @var Minify\Controller\Base
      */
     protected static $_controller = null;
     
     /**
-     * Options for current request
+     * 初始化当前请求的选项
      *
      * @var array
      */
@@ -86,17 +86,13 @@ class Minify {
     
     
     /**
-     * Specify a cache object (with identical interface as Minify_Cache_File) or
-     * a path to use with Minify_Cache_File.
+     * 指定一个缓存对象(与Minify\Cache\File 相同的缓存接口 ) 或者直接使用 Minify\Cache\File.
      * 
-     * If not called, Minify will not use a cache and, for each 200 response, will 
-     * need to recombine files, minify and encode the output.
+     * If not called, Minify 不会使用缓存, 为每个200响应, 将需要重组文件、压缩和编码输出.
      *
-     * @param mixed $cache object with identical interface as Minify_Cache_File or
-     * a directory path, or null to disable caching. (default = '')
+     * @param mixed $cache 与Minify\Cache\File 相同的缓存接口或一个目录路径, 或null禁用缓存. (default = '')
      * 
-     * @param bool $fileLocking (default = true) This only applies if the first
-     * parameter is a string.
+     * @param bool $fileLocking (default = true)
      *
      * @return null
      */
@@ -110,80 +106,13 @@ class Minify {
     }
     
     /**
-     * Serve a request for a minified file. 
-     * 
-     * Here are the available options and defaults in the base controller:
-     * 
-     * 'isPublic' : send "public" instead of "private" in Cache-Control 
-     * headers, allowing shared caches to cache the output. (default true)
-     * 
-     * 'quiet' : set to true to have serve() return an array rather than sending
-     * any headers/output (default false)
-     * 
-     * 'encodeOutput' : set to false to disable content encoding, and not send
-     * the Vary header (default true)
-     * 
-     * 'encodeMethod' : generally you should let this be determined by 
-     * HTTP_Encoder (leave null), but you can force a particular encoding
-     * to be returned, by setting this to 'gzip' or '' (no encoding)
-     * 
-     * 'encodeLevel' : level of encoding compression (0 to 9, default 9)
-     * 
-     * 'contentTypeCharset' : appended to the Content-Type header sent. Set to a falsey
-     * value to remove. (default 'utf-8')  
-     * 
-     * 'maxAge' : set this to the number of seconds the client should use its cache
-     * before revalidating with the server. This sets Cache-Control: max-age and the
-     * Expires header. Unlike the old 'setExpires' setting, this setting will NOT
-     * prevent conditional GETs. Note this has nothing to do with server-side caching.
-     * 
-     * 'rewriteCssUris' : If true, serve() will automatically set the 'currentDir'
-     * minifier option to enable URI rewriting in CSS files (default true)
-     * 
-     * 'bubbleCssImports' : If true, all @import declarations in combined CSS
-     * files will be move to the top. Note this may alter effective CSS values
-     * due to a change in order. (default false)
-     * 
-     * 'debug' : set to true to minify all sources with the 'Lines' controller, which
-     * eases the debugging of combined files. This also prevents 304 responses.
-     * @see Minify_Lines::minify()
+     * 执行合并压缩任务 
      *
-     * 'concatOnly' : set to true to disable minification and simply concatenate the files.
-     * For JS, no minifier will be used. For CSS, only URI rewriting is still performed.
+     * @param mixed $controller 控制器实例化或者直接控制器名称
      * 
-     * 'minifiers' : to override Minify's default choice of minifier function for 
-     * a particular content-type, specify your callback under the key of the 
-     * content-type:
-     * <code>
-     * // call customCssMinifier($css) for all CSS minification
-     * $options['minifiers'][Minify::TYPE_CSS] = 'customCssMinifier';
+     * @param array $options    控制所需参数
      * 
-     * // don't minify Javascript at all
-     * $options['minifiers'][Minify::TYPE_JS] = '';
-     * </code>
-     * 
-     * 'minifierOptions' : to send options to the minifier function, specify your options
-     * under the key of the content-type. E.g. To send the CSS minifier an option: 
-     * <code>
-     * // give CSS minifier array('optionName' => 'optionValue') as 2nd argument 
-     * $options['minifierOptions'][Minify::TYPE_CSS]['optionName'] = 'optionValue';
-     * </code>
-     * 
-     * 'contentType' : (optional) this is only needed if your file extension is not 
-     * js/css/html. The given content-type will be sent regardless of source file
-     * extension, so this should not be used in a Groups config with other
-     * Javascript/CSS files.
-     * 
-     * Any controller options are documented in that controller's setupSources() method.
-     * 
-     * @param mixed $controller instance of subclass of Minify_Controller_Base or string
-     * name of controller. E.g. 'Files'
-     * 
-     * @param array $options controller/serve options
-     * 
-     * @return null|array if the 'quiet' option is set to true, an array
-     * with keys "success" (bool), "statusCode" (int), "content" (string), and
-     * "headers" (array).
+     * @return null|array 
      *
      * @throws Exception
      */
@@ -194,22 +123,18 @@ class Minify {
         }
 
         if (is_string($controller)) {
-            // make $controller into object
-            $class = '\\JYmusic\\Assets\\Minify\\Controller\\' . $controller;
-            
+            //创建控制器实例
+            $class      = '\\JYmusic\\Assets\\Minify\\Controller\\' . $controller;        
             $controller = new $class();
-            /* @var Minify_Controller_Base $controller */
         }
         
-        // set up controller sources and mix remaining options with
-        // controller defaults
         $options = $controller->setupSources($options);
         $options = $controller->analyzeSources($options);
         self::$_options = $controller->mixInDefaultOptions($options);
         
-        // check request validity
+        // 检查请求的有效性
         if (! $controller->sources) {
-            // invalid request!
+            // 无效请求 !
             if (! self::$_options['quiet']) {
                 self::_errorExit(self::$_options['badRequestHeader'], self::URL_DEBUG);
             } else {
@@ -230,25 +155,22 @@ class Minify {
             self::$_options['maxAge'] = 0;
         }
         
-        // determine encoding
+        // 确定编码
         if (self::$_options['encodeOutput']) {
             $sendVary = true;
             if (self::$_options['encodeMethod'] !== null) {
-                // controller specifically requested this
+                // 控制器具体要求
                 $contentEncoding = self::$_options['encodeMethod'];
             } else {
-                // sniff request header
-                // depending on what the client accepts, $contentEncoding may be
-                // 'x-gzip' while our internal encodeMethod is 'gzip'. Calling
-                // getAcceptedEncoding(false, false) leaves out compress and deflate as options.
+                //$contentEncoding 可能'x-gzip' 而我们的内部encodeMethod 是 'gzip'.   
                 list(self::$_options['encodeMethod'], $contentEncoding) = Encoder::getAcceptedEncoding(false, false);
                 $sendVary = ! Encoder::isBuggyIe();
             }
         } else {
-            self::$_options['encodeMethod'] = ''; // identity (no encoding)
+            self::$_options['encodeMethod'] = ''; 
         }
         
-        // check client cache
+        // 检查客户端缓存
         $cgOptions = array(
             'lastModifiedTime' => self::$_options['lastModifiedTime']
             ,'isPublic' => self::$_options['isPublic']
@@ -279,7 +201,7 @@ class Minify {
                 );
             }
         } else {
-            // client will need output
+            // 客户端需要输出
             $headers = $cg->getHeaders();
             unset($cg);
         }
@@ -310,8 +232,6 @@ class Minify {
         if (null !== self::$_cache && ! self::$_options['debug']) {
 
             // 使用缓存
-            // the goal is to use only the cache methods to sniff the length and 
-            // 输出的内容,因为它们不需要文件加载到内存中.
             $cacheId = self::_getCacheId();
             $fullCacheId = (self::$_options['encodeMethod'])
                 ? $cacheId . '.gz'
@@ -461,9 +381,9 @@ class Minify {
     }
 
     /**
-     * Set up sources to use Minify\Lines
+     * 使用Minify\Lines设置源
      *
-     * @param Minify_Source[] $sources Minify\Source instances
+     * @param Minify_Source[] $sources Minify\Source 实例
      */
     protected static function _setupDebug($sources)
     {
@@ -477,7 +397,7 @@ class Minify {
     }
     
     /**
-     * Combines sources and minifies the result.
+     * 合并压缩资源
      *
      * @return string
      *
@@ -485,25 +405,21 @@ class Minify {
      */
     protected static function _combineMinify()
     {
-        $type = self::$_options['contentType']; // ease readability
+        $type = self::$_options['contentType']; 
         
-        // when combining scripts, make sure all statements separated and
-        // trailing single line comment is terminated
+        // 在合并脚本时,确保所有语句分离和后一行注释结束
         $implodeSeparator = ($type === self::TYPE_JS)
             ? "\n;"
             : '';
-        // allow the user to pass a particular array of options to each
-        // minifier (designated by type). source objects may still override
-        // these
+
         $defaultOptions = isset(self::$_options['minifierOptions'][$type])
             ? self::$_options['minifierOptions'][$type]
             : array();
-        // if minifier not set, default is no minification. source objects
-        // may still override this
+
         $defaultMinifier = isset(self::$_options['minifiers'][$type])
             ? self::$_options['minifiers'][$type]
             : false;
-        // process groups of sources with identical minifiers/options
+
         $content = array();
         $i = 0;
         $l = count(self::$_controller->sources);
