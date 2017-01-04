@@ -16,7 +16,6 @@ $js = [
    '//js/test2.js',
    '//js/test3.js'
 ];
-
 Minify::serve("Files", $js);
 
 //合并压缩css
@@ -25,8 +24,7 @@ $css = [
    '//css/test2.css',
    '//css/test3.css'
 ];
-
-Minify::serve("Files", $js);
+Minify::serve("Files", $css);
 
 
 ```
@@ -36,14 +34,14 @@ Minify::serve("Files", $js);
 ### 使用composer
 
 ```
-$ composer require "jymusic/assets"  "dev-master"
+$ composer require jymusic/assets
 
 ```
 
 ```json
 {
     "require": {
-        "jymusic/assets"  : "dev-master"
+        "jymusic/assets"  : "~0.0.1"
     }
 }
 ```
