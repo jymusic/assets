@@ -10,28 +10,28 @@
 use JYmusic\Assets\Minify;
 
 //合并压缩js
-$files = [
+
+$js = [
    '//js/test.js',
    '//js/test2.js',
    '//js/test3.js'
 ];
 
-Minify::serve("Files", $files);
+Minify::serve("Files", $js);
 
 //合并压缩css
-
-$files = [
+$css = [
    '//css/test.css',
    '//css/test2.css',
    '//css/test3.css'
 ];
 
-Minify::serve("Files", $files);
+Minify::serve("Files", $js);
 
 
 ```
 
-## Installation
+## 安装
 
 ### 使用composer
 
