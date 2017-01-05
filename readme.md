@@ -40,7 +40,7 @@ $ composer require jymusic/assets
 ```json
 {
     "require": {
-        "jymusic/assets"  : "~0.0.1"
+        "jymusic/assets"  : "~0.1.0"
     }
 }
 ```
@@ -51,7 +51,7 @@ require 'vendor/autoload.php';
 
 use JYmusic\Assets\Minify;
 
-Minify::serve("Files",["//js/test.js"]);
+Minify::serve("Files", ["//js/test.js"]);
 
 Minify::serve("Files", ["//css/test.css"]);
 ```
