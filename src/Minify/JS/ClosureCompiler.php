@@ -4,11 +4,8 @@
  * @package Minify
  */
 namespace JYmusic\Assets\Minify\JS;
-<<<<<<< HEAD
 
 use JYmusic\Assets\Exception;
-=======
->>>>>>> ac74e2e58119589ab7e97142be86fa2e726491fa
 
 /**
  * Minify Javascript using Google's Closure Compiler API

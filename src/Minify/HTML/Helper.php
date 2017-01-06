@@ -11,10 +11,7 @@ namespace JYmusic\Assets\Minify\HTML;
  * @author Stephen Clay <steve@mrclay.org>
  */
 class Helper {
-<<<<<<< HEAD
     
-=======
->>>>>>> ac74e2e58119589ab7e97142be86fa2e726491fa
     public $rewriteWorks = true;
     public $minAppUri = '/min';
     public $groupsConfigFile = '';
