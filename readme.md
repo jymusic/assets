@@ -10,20 +10,24 @@
 use JYmusic\Assets\Minify;
 
 //合并压缩js
-$js = [
-   '//js/test.js',
-   '//js/test2.js',
-   '//js/test3.js'
+$options = [
+   'files' => [
+       '//js/test.js',
+       '//js/test2.js',
+       '//js/test3.js'
+    ]
 ];
-Minify::serve("Files", $js);
+Minify::serve("Files", $options);
 
 //合并压缩css
-$css = [
-   '//css/test.css',
-   '//css/test2.css',
-   '//css/test3.css'
+$options = [
+   'files' => [
+       '//js/test.css',
+       '//js/test2.css',
+       '//js/test3.css'
+    ]
 ];
-Minify::serve("Files", $css);
+Minify::serve("Files", $options);
 
 
 ```
@@ -51,8 +55,8 @@ require 'vendor/autoload.php';
 
 use JYmusic\Assets\Minify;
 
-Minify::serve("Files", ["//js/test.js"]);
+Minify::serve("Files", ['files' => ["//js/test.js"]]);
 
-Minify::serve("Files", ["//css/test.css"]);
+Minify::serve("Files", ['files' => ["//js/test.css"]]);
 ```
 
